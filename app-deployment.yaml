@@ -1,0 +1,52 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nexus-interview-app
+  creationTimestamp: null
+  labels:
+    app: nexus-interview-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nexus-interview-app
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: nexus-interview-app
+    spec:
+      containers:
+      - name: nexus-interview-app
+        image: jasonchen/nexus_interview_app:latest
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        ports:
+          - containerPort: 8080
+        env:
+          # - name: REDIS_HOST
+          #   value: redis-app
+          # - name: REDIS_PORT
+          #   value: "6379"    
+      restartPolicy: Always
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: nexus-interview-app-service
+#   labels:
+#     app: nexus-interview-app
+# spec:
+#   type: NodePort
+#   ports:
+#   - name: http
+#     port: 9090
+#     targetPort: 8080
+#     nodePort: 30000
+#   selector:
+#     app: nexus-interview-app
