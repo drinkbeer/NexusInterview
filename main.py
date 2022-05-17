@@ -3,16 +3,17 @@ import logging
 import os
 import sys
 from datetime import datetime, timedelta
+from time import sleep
 
 import google.cloud.logging
 import requests
 import twitter
 
-WEEK_DELTA = 12  # Weeks
+WEEK_DELTA = 24  # Weeks
 LOCATIONS = [
-    ("Toronto Enrollment Center", 5027),
-    ("Buffalo-Ft. Erie Enrollment Center", 5022),
-    ("Niagara Falls Enrollment Center", 5161),
+    ("Blaine NEXUS and FAST Enrollment Center", 5020),
+    ("Vancouver Enrollment Center", 5026),
+    ("Vancouver Urban Enrollment Center", 5041)
 ]
 
 LOGGING_FORMAT = "%(asctime)s %(name)-12s %(levelname)-8s %(message)s"
@@ -84,9 +85,12 @@ def main() -> None:
     parser.add_argument("--test", action="store_true", default=False)
     args = parser.parse_args()
 
-    logging.info(f"Starting checks (locations: {len(LOCATIONS)})")
-    for location_name, location_code in LOCATIONS:
-        check_for_openings(location_name, location_code, args.test)
+    while True:
+        logging.info(f"Starting checks (locations: {len(LOCATIONS)})")
+        for location_name, location_code in LOCATIONS:
+            check_for_openings(location_name, location_code, args.test)
+        
+        sleep(10)
 
 
 def google_cloud_entry(data, context):
